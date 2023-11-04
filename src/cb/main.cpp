@@ -9,7 +9,7 @@
 #include <boost/program_options.hpp>
 #include <boost/process.hpp>
 
-#include <clip.h>
+#include "clip.h"
 
 #include "Version.h"
 #include "../lib/MyClass.h"
@@ -94,8 +94,8 @@ int main(int argc, char* argv[])
         ("about,a", "print about message")
         ("echo,e", "echo stdin to stdout")
         ("nostrip,n", "do not strip trailing whitespace")
-        ("file,f", po::value<std::string>(), "copy file contents to clipboard")
         ("print,p", "print clipboard contents to stdout")
+        ("file,f", po::value<std::string>(), "copy file contents to clipboard")
         ("shell,s", po::value<std::string>(), "copy command output to clipboard")
         ;
 
@@ -121,13 +121,6 @@ int main(int argc, char* argv[])
         std::cout << "source code available at " << GITHUB_PAGE << std::endl;
         return 0;
     }
-    else if (vm.count("print") > 0)
-    {
-        std::string data;
-        std::cout << clip::get_text(data) << std::endl;
-        std::cout << data << std::endl;
-        return 0;
-    }
 
     CBConfig config;
     config.doEcho = vm.count("echo") > 0;
@@ -135,7 +128,17 @@ int main(int argc, char* argv[])
 
     try
     {
-        if (vm.count("shell") > 0)
+        if (vm.count("print") > 0)
+        {
+            std::string data;
+            if (!clip::get_text(data))
+            {
+                throw std::runtime_error("clipboard is empty or contains binary data");
+            }
+            
+            std::cout << data << std::endl;
+        } 
+        else if (vm.count("shell") > 0)
         {
             process_shell(config, vm["shell"].as<std::string>());
         }
