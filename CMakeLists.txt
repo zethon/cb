@@ -40,6 +40,11 @@ endif(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 
 add_subdirectory(src)
 
+set(CLIP_EXAMPLES OFF)
+set(CLIP_TESTS OFF)
+add_subdirectory(clip)
+# include_directories(clip)
+
 if (BUILD_UNIT_TESTS)
     enable_testing()
     add_subdirectory(test)

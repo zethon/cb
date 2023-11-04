@@ -5,13 +5,20 @@ set(SOURCE_FILES
 set(HEADER_FILES
 )
 
-add_executable("${CMAKE_PROJECT_NAME}"
+
+add_executable(cb
     ${SOURCE_FILES}
     ${HEADER_FILES}
 )
 
-target_link_libraries("${CMAKE_PROJECT_NAME}"
+target_include_directories(cb 
     PUBLIC
+        ${CMAKE_SOURCE_DIR}/clip
+)
+
+target_link_libraries(cb
+    PUBLIC
+        clip
         MyLib
         ${CONAN_LIBS}
 )

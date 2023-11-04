@@ -1,2 +1,2 @@
-add_subdirectory(app)
+add_subdirectory(cb)
 add_subdirectory(lib)
